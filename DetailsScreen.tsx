@@ -10,22 +10,37 @@ import {
 
 function DetailsScreen() {
   const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [productType, setProductType] = useState("");
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Details Screen</Text>
-      <TextInput style={styles.itemName} placeholder="Name" />
       <TextInput
         style={styles.itemName}
+        placeholder="Name"
+        onChangeText={setName}
+      />
+      <Text>{name}</Text>
+      <TextInput
+        style={styles.itemName}
+        onChangeText={setPrice}
         placeholder="Price"
         keyboardType="numeric"
       />
-      <TextInput style={styles.itemName} placeholder="Product Type" />
+      <Text>{price}</Text>
+      <TextInput
+        style={styles.itemName}
+        placeholder="Product Type"
+        onChangeText={setProductType}
+      />
+      <Text>{productType}</Text>
+
       <Button
         onPress={() => console.log("Pressed")}
         title="SAVE"
         color="#841584"
-        disabled={true}
+        disabled={name != "" && price != "" && productType != "" ? false : true}
         accessibilityLabel="Learn more about this purple button"
       />
 
