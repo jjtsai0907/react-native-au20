@@ -41,3 +41,11 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
+/*
+
+<TouchableOpacity
+        onPress={() => props.navigation.navigate("Details", { id: 3 })}
+      ></TouchableOpacity>
+
+console.log("Pressed")*/
