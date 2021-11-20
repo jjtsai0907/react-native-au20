@@ -16,9 +16,6 @@ const HomeScreen: React.FC = (props: any) => {
           onPress={() => props.navigation.navigate("Details", { id: 3 })}
         />
       </View>
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate("Details", { id: 3 })}
-      ></TouchableOpacity>
     </View>
   );
 };
