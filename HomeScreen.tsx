@@ -1,18 +1,22 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, FAB } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Product from "./Product";
+import { Product, Products } from "./ProductObject";
+import Item from "./Item";
 
 const HomeScreen: React.FC = (props: any) => {
   const [value, setValue] = useState("");
+  const [product, setProduct] = useState<Product>();
 
   const getProductValue = async () => {
     try {
       await AsyncStorage.getItem("product").then((result) => {
         if (result != null) {
           let jsonObject = JSON.parse(result!);
+          setProduct(jsonObject);
+          alert("product: " + product);
           alert("Name: " + jsonObject.name + "  Price: " + jsonObject.price);
         } else {
           alert("No Data");
@@ -29,6 +33,18 @@ const HomeScreen: React.FC = (props: any) => {
       <Text style={styles.text}>Home Screen</Text>
       <View>
         <Text>Name Type Price</Text>
+
+        <FlatList
+          data={Products}
+          renderItem={({ item }) => (
+            <Item
+              id={item.id}
+              name={item.name}
+              price={item.price}
+              productType={item.productType}
+            />
+          )}
+        />
 
         <FAB
           style={styles.fab}
