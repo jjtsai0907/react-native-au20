@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { FAB } from "react-native-paper";
+import { Button, FAB } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen: React.FC = (props: any) => {
+  const [value, setValue] = useState("");
+
+  const getProductValue = () => {
+    AsyncStorage.getItem("product").then((value) => setValue(value!));
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Home Screen</Text>
@@ -16,6 +23,8 @@ const HomeScreen: React.FC = (props: any) => {
           onPress={() => props.navigation.navigate("Details", { id: 3 })}
         />
       </View>
+      <Button onPress={() => getProductValue()}>Hey</Button>
+      <Text>{value}</Text>
     </View>
   );
 };

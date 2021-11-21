@@ -7,11 +7,18 @@ import {
   Pressable,
   Button,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [productType, setProductType] = useState("");
+  const [productValue, setProductValue] = useState("");
+
+  const saveProductValue = () => {
+    AsyncStorage.setItem("product", name);
+    alert("Data saved!");
+  };
 
   return (
     <View style={styles.container}>
@@ -37,7 +44,7 @@ const DetailsScreen: React.FC = (props: any) => {
       <Text>{productType}</Text>
 
       <Button
-        onPress={() => console.log("Pressed")}
+        onPress={() => saveProductValue()}
         title="SAVE"
         color="#841584"
         disabled={name != "" && price != "" && productType != "" ? false : true}
