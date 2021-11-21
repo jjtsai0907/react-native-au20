@@ -15,12 +15,17 @@ const DetailsScreen: React.FC = (props: any) => {
   const [productType, setProductType] = useState("");
   const [productValue, setProductValue] = useState("");
 
-  const saveProductValue = () => {
-    AsyncStorage.setItem(
-      "product",
-      JSON.stringify({ name: name, price: price, productType: productType })
-    );
-    alert("Data saved!");
+  const saveProductValue = async () => {
+    try {
+      await AsyncStorage.setItem(
+        "product",
+        JSON.stringify({ name: name, price: price, productType: productType })
+      );
+      alert("Data saved!");
+    } catch (error) {
+      console.log("Saving data error");
+      alert("Saving data error!");
+    }
   };
 
   return (
@@ -88,6 +93,9 @@ const styles = StyleSheet.create({
 
 export default DetailsScreen;
 
+function anync() {
+  throw new Error("Function not implemented.");
+}
 /*<Pressable disabled={true}>
         {({ pressed }) => <Text>CANCEL</Text>}
       </Pressable> */
