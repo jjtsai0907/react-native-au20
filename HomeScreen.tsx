@@ -8,14 +8,14 @@ import Item from "./Item";
 
 const HomeScreen: React.FC = (props: any) => {
   const [value, setValue] = useState("");
-  const [product, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<Product[] | null>(null);
 
   const getProductValue = async () => {
     try {
       await AsyncStorage.getItem("product").then((result) => {
         if (result != null) {
-          let jsonObject = JSON.parse(result!);
-          setProduct(jsonObject);
+          let jsonObject: Product = JSON.parse(result!);
+          setProduct([jsonObject]);
           alert("product: " + product);
           alert("Name: " + jsonObject.name + "  Price: " + jsonObject.price);
         } else {
@@ -35,7 +35,7 @@ const HomeScreen: React.FC = (props: any) => {
         <Text>Name Type Price</Text>
 
         <FlatList
-          data={Products}
+          data={product}
           renderItem={({ item }) => (
             <Item
               id={item.id}
