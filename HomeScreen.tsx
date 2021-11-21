@@ -3,12 +3,25 @@ import { StyleSheet, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, FAB } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Product from "./Product";
 
 const HomeScreen: React.FC = (props: any) => {
   const [value, setValue] = useState("");
 
-  const getProductValue = () => {
-    AsyncStorage.getItem("product").then((value) => setValue(value!));
+  const getProductValue = async () => {
+    try {
+      await AsyncStorage.getItem("product").then((result) => {
+        if (result != null) {
+          let jsonObject = JSON.parse(result!);
+          alert("Name: " + jsonObject.name + "  Price: " + jsonObject.price);
+        } else {
+          alert("No Data");
+        }
+      });
+    } catch (error) {
+      console.log("Reading data error");
+      alert("Reading data error!");
+    }
   };
 
   return (
@@ -16,6 +29,7 @@ const HomeScreen: React.FC = (props: any) => {
       <Text style={styles.text}>Home Screen</Text>
       <View>
         <Text>Name Type Price</Text>
+
         <FAB
           style={styles.fab}
           small
@@ -51,6 +65,9 @@ const styles = StyleSheet.create({
 
 export default HomeScreen;
 
+function key(val: any, key: any) {
+  throw new Error("Function not implemented.");
+}
 /*
 
 <TouchableOpacity
