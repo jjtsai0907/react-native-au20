@@ -8,7 +8,7 @@ import {
   Button,
 } from "react-native";
 
-function DetailsScreen() {
+const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [productType, setProductType] = useState("");
@@ -45,14 +45,14 @@ function DetailsScreen() {
       />
 
       <Button
-        onPress={() => console.log("Pressed")}
+        onPress={() => props.navigation.navigate("Home", { id: 1 })}
         title="CANCEL"
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
