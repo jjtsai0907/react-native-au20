@@ -6,10 +6,11 @@ const Item: FC<Product> = (props) => {
   return (
     <View>
       <View>
-        <Text>{props.name}</Text>
+        <Text>Product Name: {props.name}</Text>
       </View>
       <View>
-        <Text>{props.price}</Text>
+        <Text>Product Price: {props.price}</Text>
+        <Text>Product Type: {props.productType}</Text>
       </View>
     </View>
   );
