@@ -16,7 +16,10 @@ const DetailsScreen: React.FC = (props: any) => {
   const [productValue, setProductValue] = useState("");
 
   const saveProductValue = () => {
-    AsyncStorage.setItem("product", name);
+    AsyncStorage.setItem(
+      "product",
+      JSON.stringify({ name: name, price: price, productType: productType })
+    );
     alert("Data saved!");
   };
 
