@@ -5,9 +5,18 @@ import {
   Text,
   TextInput,
   Pressable,
-  Button,
+  TouchableOpacity,
 } from "react-native";
+import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Feather, Foundation } from "@expo/vector-icons";
+
+/*const IconButton = ({ title, onPress, icon }) => (
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <Text>{title}</Text>
+    {icon}
+  </TouchableOpacity>
+);*/
 
 const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
@@ -77,20 +86,17 @@ const DetailsScreen: React.FC = (props: any) => {
         onChangeText={setProductType}
       />
       <Text>{productType}</Text>
-
       <Button
-        onPress={() => saveProductValue()}
+        icon={<Feather name="download" size={24} color="black" />}
         title="SAVE"
-        color="#841584"
         disabled={name != "" && price != "" && productType != "" ? false : true}
-        accessibilityLabel="Learn more about this purple button"
+        onPress={() => saveProductValue()}
       />
 
       <Button
-        onPress={() => props.navigation.navigate("Home", { id: 1 })}
+        icon={<Foundation name="prohibited" size={24} color="black" />}
         title="CANCEL"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
+        onPress={() => props.navigation.navigate("Home", { id: 1 })}
       />
     </View>
   );
@@ -125,4 +131,30 @@ function anync() {
 }
 /*<Pressable disabled={true}>
         {({ pressed }) => <Text>CANCEL</Text>}
-      </Pressable> */
+      </Pressable> 
+      
+      
+      
+      
+      <Button
+        onPress={() => saveProductValue()}
+        title={"SAVE"}
+        color="#841584"
+        disabled={name != "" && price != "" && productType != "" ? false : true}
+        accessibilityLabel="Learn more about this purple button"
+      />
+      
+      <Button
+        //<Feather name="download" size={24} color="black" />
+        onPress={() => props.navigation.navigate("Home", { id: 1 })}
+        title="CANCEL"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
+     
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate("Home", { id: 1 })}
+      >
+        <Text>{"CANCEL"}</Text>
+        {<Feather name="download" size={24} color="black" />}
+      </TouchableOpacity>*/
