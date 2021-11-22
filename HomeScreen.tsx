@@ -1,19 +1,28 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, FAB } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Product from "./Product";
+import { Product, Products } from "./ProductObject";
+import Item from "./Item";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen: React.FC = (props: any) => {
   const [value, setValue] = useState("");
+  const [product, setProduct] = useState<Product[] | null>(null);
+
+  useFocusEffect(() => {
+    (() => {
+      getProductValue();
+    })();
+  });
 
   const getProductValue = async () => {
     try {
       await AsyncStorage.getItem("product").then((result) => {
         if (result != null) {
-          let jsonObject = JSON.parse(result!);
-          alert("Name: " + jsonObject.name + "  Price: " + jsonObject.price);
+          let jsonObject: Product = JSON.parse(result!);
+          setProduct([jsonObject]);
         } else {
           alert("No Data");
         }
@@ -28,7 +37,21 @@ const HomeScreen: React.FC = (props: any) => {
     <View style={styles.container}>
       <Text style={styles.text}>Home Screen</Text>
       <View>
-        <Text>Name Type Price</Text>
+        <FlatList
+          data={product}
+          renderItem={({ item }) =>
+            product == null || product == [] ? (
+              <Text>NO ITEMS</Text>
+            ) : (
+              <Item
+                id={item.id}
+                name={item.name}
+                price={item.price}
+                productType={item.productType}
+              />
+            )
+          }
+        />
 
         <FAB
           style={styles.fab}
@@ -37,7 +60,7 @@ const HomeScreen: React.FC = (props: any) => {
           onPress={() => props.navigation.navigate("Details", { id: 3 })}
         />
       </View>
-      <Button onPress={() => getProductValue()}>Hey</Button>
+
       <Text>{value}</Text>
     </View>
   );
@@ -66,6 +89,10 @@ const styles = StyleSheet.create({
 export default HomeScreen;
 
 function key(val: any, key: any) {
+  throw new Error("Function not implemented.");
+}
+
+function useFocuseEffect(arg0: () => void, arg1: never[]) {
   throw new Error("Function not implemented.");
 }
 /*
