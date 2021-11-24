@@ -66,7 +66,7 @@ const DetailsScreen: React.FC = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Details Screen</Text>
+      <Text style={styles.text}>Create New Product</Text>
       <TextInput
         style={styles.itemName}
         placeholder="Name"

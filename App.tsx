@@ -5,9 +5,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
-import HomeScreen from "./HomeScreen";
-import DetailsScreen from "./DetailsScreen";
-import { Product } from "./ProductObject";
+import HomeScreen from "./screens/HomeScreen";
+import DetailsScreen from "./screens/DetailsScreen";
+import { Product } from "./models/ProductObject";
 
 const AppContext = createContext<[Product] | null>(null);
 
