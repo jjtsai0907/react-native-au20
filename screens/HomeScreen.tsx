@@ -3,8 +3,8 @@ import { StyleSheet, View, Text, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, FAB } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Product, Products } from "./ProductObject";
-import Item from "./Item";
+import { Product, Products } from "../models/ProductObject";
+import Item from "../models/Item";
 import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen: React.FC = (props: any) => {
@@ -35,7 +35,7 @@ const HomeScreen: React.FC = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home Screen</Text>
+      <Text style={styles.text}>Items</Text>
       <View>
         <FlatList
           data={product}
