@@ -9,7 +9,7 @@ import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen: React.FC = (props: any) => {
   const [value, setValue] = useState("");
-  const [product, setProduct] = useState<Product[] | null>(null);
+  const [product, setProduct] = useState<[Product] | null>(null);
 
   useFocusEffect(() => {
     (() => {
@@ -40,7 +40,7 @@ const HomeScreen: React.FC = (props: any) => {
         <FlatList
           data={product}
           renderItem={({ item }) =>
-            product == null || product == [] ? (
+            product == null ? (
               <Text>NO ITEMS</Text>
             ) : (
               <Item
