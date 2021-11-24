@@ -62,6 +62,7 @@ const DetailsScreen: React.FC = (props: any) => {
       console.log("Saving data error");
       alert("Saving data error!");
     }
+    props.navigation.navigate("Home", { id: 1 });
   };
 
   return (
@@ -72,20 +73,20 @@ const DetailsScreen: React.FC = (props: any) => {
         placeholder="Name"
         onChangeText={setName}
       />
-      <Text>{name}</Text>
+
       <TextInput
         style={styles.itemName}
         onChangeText={setPrice}
         placeholder="Price"
         keyboardType="numeric"
       />
-      <Text>{price}</Text>
+
       <TextInput
         style={styles.itemName}
         placeholder="Product Type"
         onChangeText={setProductType}
       />
-      <Text>{productType}</Text>
+
       <Button
         icon={<Feather name="download" size={24} color="black" />}
         title="SAVE"
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   itemName: {
-    backgroundColor: "red",
+    backgroundColor: "white",
     fontSize: 25,
     borderColor: "black",
     borderWidth: 2,
