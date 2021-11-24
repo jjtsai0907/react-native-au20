@@ -62,6 +62,7 @@ const DetailsScreen: React.FC = (props: any) => {
       console.log("Saving data error");
       alert("Saving data error!");
     }
+    props.navigation.navigate("Home", { id: 1 });
   };
 
   return (
