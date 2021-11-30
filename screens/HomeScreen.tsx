@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, FlatList, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  Pressable,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, FAB } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,6 +17,7 @@ import { useFocusEffect } from "@react-navigation/native";
 const HomeScreen: React.FC = (props: any) => {
   const [value, setValue] = useState("");
   const [products, setProduct] = useState<Product[] | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product>();
 
   useFocusEffect(() => {
     (() => {
@@ -33,6 +41,19 @@ const HomeScreen: React.FC = (props: any) => {
     }
   };
 
+  const saveSelectedItem = async () => {
+    try {
+      await AsyncStorage.setItem(
+        "selectedItem",
+        JSON.stringify(selectedProduct)
+      );
+      alert("Data saved!");
+    } catch (error) {
+      console.log("Saving data error");
+      alert("Saving data error!");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Items</Text>
@@ -45,12 +66,20 @@ const HomeScreen: React.FC = (props: any) => {
               products == null ? (
                 <Text>NO ITEMS</Text>
               ) : (
-                <Item
-                  id={item.id}
-                  name={item.name}
-                  price={item.price}
-                  productType={item.productType}
-                />
+                <Pressable
+                  onPress={() => {
+                    setSelectedProduct(item);
+                    saveSelectedItem();
+                    props.navigation.navigate("EditProduct", { id: 4 });
+                  }}
+                >
+                  <Item
+                    id={item.id}
+                    name={item.name}
+                    price={item.price}
+                    productType={item.productType}
+                  />
+                </Pressable>
               )
             }
           />
