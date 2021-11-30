@@ -10,6 +10,7 @@ import {
 import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather, Foundation } from "@expo/vector-icons";
+import { Product } from "../models/ProductObject";
 
 /*const IconButton = ({ title, onPress, icon }) => (
   <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -23,16 +24,42 @@ const DetailsScreen: React.FC = (props: any) => {
   const [price, setPrice] = useState("");
   const [productType, setProductType] = useState("");
   const [productList, setProductList] = useState([]);
+  const [oldList, setOldList] = useState<Product[]>([]);
+
+  const getOldList = async () => {
+    try {
+      await AsyncStorage.getItem("product").then((result) => {
+        if (result != null) {
+          let jsonObject: [Product] = JSON.parse(result!);
+          setOldList(jsonObject);
+          alert("oldList" + oldList.length);
+        } else {
+          alert("No Data");
+        }
+      });
+    } catch (error) {
+      console.log("Reading data error");
+      alert("Reading data error!");
+    }
+  };
 
   const saveProductValue = async () => {
+    alert(oldList.length);
+    await getOldList();
+    let aa: Product = {
+      id: Math.random(),
+      name: name,
+      price: price,
+      productType: productType,
+    };
+
+    //setOldList([...oldList, aa]);
+    oldList.push(aa);
+    oldList.push(...oldList);
+
+    alert(oldList.length);
     try {
-      await AsyncStorage.setItem(
-        "product",
-        JSON.stringify([
-          { name: name, price: price, productType: productType },
-          { name: "name", price: "price", productType: "productType" },
-        ])
-      );
+      await AsyncStorage.setItem("product", JSON.stringify(oldList));
       alert("Data saved!");
     } catch (error) {
       console.log("Saving data error");
