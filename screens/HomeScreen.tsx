@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { StyleSheet, View, Text, FlatList, ScrollView } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, FAB } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,7 +9,7 @@ import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen: React.FC = (props: any) => {
   const [value, setValue] = useState("");
-  const [product, setProduct] = useState<[Product] | null>(null);
+  const [products, setProduct] = useState<Product[] | null>(null);
 
   useFocusEffect(() => {
     (() => {
@@ -21,8 +21,8 @@ const HomeScreen: React.FC = (props: any) => {
     try {
       await AsyncStorage.getItem("product").then((result) => {
         if (result != null) {
-          let jsonObject: Product = JSON.parse(result!);
-          setProduct([jsonObject]);
+          let jsonObject: [Product] = JSON.parse(result!);
+          setProduct(jsonObject);
         } else {
           alert("No Data");
         }
@@ -36,23 +36,25 @@ const HomeScreen: React.FC = (props: any) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Items</Text>
-      <View>
-        <FlatList
-          data={product}
-          renderItem={({ item }) =>
-            product == null ? (
-              <Text>NO ITEMS</Text>
-            ) : (
-              <Item
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                productType={item.productType}
-              />
-            )
-          }
-        />
 
+      <View>
+        <ScrollView>
+          <FlatList
+            data={products}
+            renderItem={({ item }) =>
+              products == null ? (
+                <Text>NO ITEMS</Text>
+              ) : (
+                <Item
+                  id={item.id}
+                  name={item.name}
+                  price={item.price}
+                  productType={item.productType}
+                />
+              )
+            }
+          />
+        </ScrollView>
         <FAB
           style={styles.fab}
           small
