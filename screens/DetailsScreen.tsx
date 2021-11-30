@@ -6,6 +6,7 @@ import {
   TextInput,
   Pressable,
   TouchableOpacity,
+  Picker,
 } from "react-native";
 import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,7 +23,7 @@ import { Product } from "../models/ProductObject";
 const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [productType, setProductType] = useState("");
+  const [productType, setProductType] = useState("Peripheral");
   const [productList, setProductList] = useState([]);
   const [oldList, setOldList] = useState<Product[]>([]);
 
@@ -30,7 +31,7 @@ const DetailsScreen: React.FC = (props: any) => {
     try {
       await AsyncStorage.getItem("product").then((result) => {
         if (result != null) {
-          let jsonObject: [Product] = JSON.parse(result!);
+          let jsonObject: [Product] = JSON.parse(JSON.stringify(result!));
           setOldList(jsonObject);
           alert("oldList" + oldList.length);
         } else {
@@ -84,11 +85,13 @@ const DetailsScreen: React.FC = (props: any) => {
         keyboardType="numeric"
       />
 
-      <TextInput
-        style={styles.itemName}
-        placeholder="Product Type"
-        onChangeText={setProductType}
-      />
+      <Picker
+        selectedValue={productType}
+        onValueChange={(itemValue, itemIndex) => setProductType(itemValue)}
+      >
+        <Picker.Item label="Peripheral" value="Peripheral" />
+        <Picker.Item label="Integrated" value="Integrated" />
+      </Picker>
 
       <Button
         icon={<Feather name="download" size={24} color="black" />}
