@@ -13,13 +13,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather, Foundation } from "@expo/vector-icons";
 import { Product } from "../models/ProductObject";
 
-/*const IconButton = ({ title, onPress, icon }) => (
-  <TouchableOpacity style={styles.button} onPress={onPress}>
-    <Text>{title}</Text>
-    {icon}
-  </TouchableOpacity>
-);*/
-
 const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -71,40 +64,44 @@ const DetailsScreen: React.FC = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Create New Product</Text>
+      <Text>Create New Product</Text>
       <TextInput
-        style={styles.itemName}
+        style={styles.textInput}
         placeholder="Name"
         onChangeText={setName}
       />
 
       <TextInput
-        style={styles.itemName}
+        style={styles.textInput}
         onChangeText={setPrice}
         placeholder="Price"
         keyboardType="numeric"
       />
 
       <Picker
+        style={styles.productPicker}
         selectedValue={productType}
         onValueChange={(itemValue, itemIndex) => setProductType(itemValue)}
       >
         <Picker.Item label="Peripheral" value="Peripheral" />
         <Picker.Item label="Integrated" value="Integrated" />
       </Picker>
+      <View style={styles.buttonContainer}>
+        <Button
+          icon={<Feather name="download" size={24} color="black" />}
+          title="SAVE"
+          disabled={
+            name != "" && price != "" && productType != "" ? false : true
+          }
+          onPress={() => saveProductValue()}
+        />
 
-      <Button
-        icon={<Feather name="download" size={24} color="black" />}
-        title="SAVE"
-        disabled={name != "" && price != "" && productType != "" ? false : true}
-        onPress={() => saveProductValue()}
-      />
-
-      <Button
-        icon={<Foundation name="prohibited" size={24} color="black" />}
-        title="CANCEL"
-        onPress={() => props.navigation.navigate("Home", { id: 1 })}
-      />
+        <Button
+          icon={<Foundation name="prohibited" size={24} color="black" />}
+          title="CANCEL"
+          onPress={() => props.navigation.navigate("Home", { id: 1 })}
+        />
+      </View>
     </View>
   );
 };
@@ -112,22 +109,38 @@ const DetailsScreen: React.FC = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ebebeb",
-  },
-  text: {
-    color: "#101010",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  itemName: {
     backgroundColor: "white",
-    fontSize: 25,
+  },
+  textInput: {
     borderColor: "black",
-    borderWidth: 2,
-    height: 50,
-    borderRadius: 15,
+    borderWidth: 1,
+    borderRadius: 5,
+    marginHorizontal: 40,
+    marginTop: 20,
+    paddingStart: 10,
+    paddingVertical: 15,
+  },
+  productPicker: {
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginHorizontal: 40,
+    marginVertical: 20,
+    paddingStart: 10,
+    paddingVertical: 15,
+  },
+  buttonContainer: {
+    width: "80%",
+    marginHorizontal: 40,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  errorMessage: {
+    marginHorizontal: 40,
+    marginTop: 5,
+  },
+  errorMessageLabel: {
+    color: "red",
   },
 });
 
@@ -136,32 +149,3 @@ export default DetailsScreen;
 function anync() {
   throw new Error("Function not implemented.");
 }
-/*<Pressable disabled={true}>
-        {({ pressed }) => <Text>CANCEL</Text>}
-      </Pressable> 
-      
-      
-      
-      
-      <Button
-        onPress={() => saveProductValue()}
-        title={"SAVE"}
-        color="#841584"
-        disabled={name != "" && price != "" && productType != "" ? false : true}
-        accessibilityLabel="Learn more about this purple button"
-      />
-      
-      <Button
-        //<Feather name="download" size={24} color="black" />
-        onPress={() => props.navigation.navigate("Home", { id: 1 })}
-        title="CANCEL"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
-     
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate("Home", { id: 1 })}
-      >
-        <Text>{"CANCEL"}</Text>
-        {<Feather name="download" size={24} color="black" />}
-      </TouchableOpacity>*/
