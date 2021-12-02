@@ -26,6 +26,16 @@ const EditProductScreen: React.FC = (props: any) => {
     props.navigation.navigate("Home", { id: 1 });
   };
 
+  const removeProduct = () => {
+    if (context.product) {
+      context.removeProduct(context.product);
+      alert("deleted");
+      props.navigation.navigate("Home", { id: 1 });
+    } else {
+      console.log("Something went wrong");
+    }
+  };
+
   /*useEffect(() => {
     (() => {
       getSelectedItem();
@@ -104,7 +114,9 @@ const EditProductScreen: React.FC = (props: any) => {
         <Button
           icon={<Foundation name="page-remove" size={24} color="red" />}
           title="DELETE"
-          onPress={() => props.navigation.navigate("Home", { id: 1 })}
+          onPress={() => {
+            removeProduct();
+          }}
         />
       </View>
     </View>
