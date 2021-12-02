@@ -14,11 +14,23 @@ const EditProductScreen: React.FC = (props: any) => {
   const [price, setPrice] = useState(context.product?.productPrice ?? "");
   const [productType, setProductType] = useState(context.product?.productType);
 
-  useEffect(() => {
+  const editProduct = () => {
+    let editedItem = {
+      productId: context.product?.productId ?? "",
+      productName: name ?? "",
+      productType: productType ?? "",
+      productPrice: price ?? "",
+    };
+
+    context.editProduct(editedItem);
+    props.navigation.navigate("Home", { id: 1 });
+  };
+
+  /*useEffect(() => {
     (() => {
       getSelectedItem();
     })();
-  });
+  });*/
 
   const getSelectedItem = async () => {
     try {
@@ -46,13 +58,17 @@ const EditProductScreen: React.FC = (props: any) => {
       <TextInput
         style={styles.textInput}
         placeholder="Name"
-        onChangeText={setName}
+        onChangeText={(text) => {
+          setName(text);
+        }}
         value={name}
       />
 
       <TextInput
         style={styles.textInput}
-        onChangeText={setPrice}
+        onChangeText={(text) => {
+          setPrice(text);
+        }}
         placeholder="Price"
         keyboardType="numeric"
         value={price}
@@ -62,6 +78,7 @@ const EditProductScreen: React.FC = (props: any) => {
         style={styles.productPicker}
         selectedValue={productType}
         onValueChange={(itemValue, itemIndex) => setProductType(itemValue)}
+        //onValueChange={(itemValue, itemIndex) => setProductType(itemValue)}
       >
         <Picker.Item label="Peripheral" value="Peripheral" />
         <Picker.Item label="Integrated" value="Integrated" />
@@ -73,11 +90,20 @@ const EditProductScreen: React.FC = (props: any) => {
           disabled={
             name != "" && price != "" && productType != "" ? false : true
           }
+          onPress={() => {
+            editProduct();
+          }}
         />
 
         <Button
           icon={<Foundation name="prohibited" size={24} color="black" />}
           title="CANCEL"
+          onPress={() => props.navigation.navigate("Home", { id: 1 })}
+        />
+
+        <Button
+          icon={<Foundation name="page-remove" size={24} color="red" />}
+          title="DELETE"
           onPress={() => props.navigation.navigate("Home", { id: 1 })}
         />
       </View>
