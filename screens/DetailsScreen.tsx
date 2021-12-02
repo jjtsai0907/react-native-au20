@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,6 +12,7 @@ import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather, Foundation } from "@expo/vector-icons";
 import { Product } from "../models/ProductObject";
+import { ProductContext } from "../contexts/ProductContext";
 
 const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
@@ -19,6 +20,21 @@ const DetailsScreen: React.FC = (props: any) => {
   const [productType, setProductType] = useState("Peripheral");
   const [productList, setProductList] = useState([]);
   const [oldList, setOldList] = useState<Product[]>([]);
+
+  const context = useContext(ProductContext);
+
+  const saveNewProduct = () => {
+    const newItem = {
+      productId: Math.random().toString(),
+      productName: name,
+      productType: productType,
+      productPrice: price,
+    };
+    context.addProduct(newItem);
+    //props.navigation.navigate("ProductList");
+    alert("Data saved!" + newItem.productName);
+    props.navigation.navigate("Home", { id: 1 });
+  };
 
   const getOldList = async () => {
     try {
@@ -93,7 +109,7 @@ const DetailsScreen: React.FC = (props: any) => {
           disabled={
             name != "" && price != "" && productType != "" ? false : true
           }
-          onPress={() => saveProductValue()}
+          onPress={() => saveNewProduct()}
         />
 
         <Button

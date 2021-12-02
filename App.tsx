@@ -9,6 +9,7 @@ import HomeScreen from "./screens/HomeScreen";
 import DetailsScreen from "./screens/DetailsScreen";
 import { Product } from "./models/ProductObject";
 import EditProductScreen from "./screens/EditProductScreen";
+import { ProductContextProvider } from "./contexts/ProductContext";
 
 const AppContext = createContext<[Product] | null>(null);
 
@@ -39,7 +40,7 @@ export default function App() {
   };
 
   return (
-    <AppContext.Provider value={appProduct}>
+    <ProductContextProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
@@ -47,7 +48,7 @@ export default function App() {
           <Stack.Screen name="EditProduct" component={EditProductScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </AppContext.Provider>
+    </ProductContextProvider>
   );
 }
 
