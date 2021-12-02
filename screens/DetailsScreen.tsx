@@ -23,10 +23,24 @@ const DetailsScreen: React.FC = (props: any) => {
 
   const context = useContext(ProductContext);
   const [isPriceValid, setIsPriceValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
 
   const inRange = () => {
     return parseInt(price) >= 1000 && parseInt(price) <= 2600;
   };
+
+  useEffect(() => {
+    if (context.products) {
+      for (let i = 0; i < context.products?.length; i++) {
+        if (context.products[i].productName === name) {
+          setIsNameValid(false);
+          return;
+        } else {
+          setIsNameValid(true);
+        }
+      }
+    }
+  }, [name]);
 
   const saveNewProduct = () => {
     const newItem = {
@@ -98,6 +112,13 @@ const DetailsScreen: React.FC = (props: any) => {
         placeholder="Name"
         onChangeText={setName}
       />
+      {!isNameValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The name is not valid, please enter a new one
+          </Text>
+        </View>
+      )}
 
       <TextInput
         style={styles.textInput}

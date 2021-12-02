@@ -14,6 +14,24 @@ const EditProductScreen: React.FC = (props: any) => {
   const [price, setPrice] = useState(context.product?.productPrice ?? "");
   const [productType, setProductType] = useState(context.product?.productType);
   const [isPriceValid, setIsPriceValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
+
+  useEffect(() => {
+    if (context.products) {
+      for (let i = 0; i < context.products?.length; i++) {
+        if (context.products[i].productName === name) {
+          if (name === context.product?.productName) {
+            setIsNameValid(true);
+          } else {
+            setIsNameValid(false);
+            return;
+          }
+        } else {
+          setIsNameValid(true);
+        }
+      }
+    }
+  }, [name]);
 
   const inRange = () => {
     return parseInt(price) >= 1000 && parseInt(price) <= 2600;
@@ -83,6 +101,14 @@ const EditProductScreen: React.FC = (props: any) => {
         }}
         value={name}
       />
+
+      {!isNameValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The name is not valid, please enter a new one
+          </Text>
+        </View>
+      )}
 
       <TextInput
         style={styles.textInput}
