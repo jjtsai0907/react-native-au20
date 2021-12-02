@@ -29,7 +29,7 @@ const EditProductScreen: React.FC = (props: any) => {
   const removeProduct = () => {
     if (context.product) {
       context.removeProduct(context.product);
-      alert("deleted");
+      alert("Deleted");
       props.navigation.navigate("Home", { id: 1 });
     } else {
       console.log("Something went wrong");
@@ -40,7 +40,7 @@ const EditProductScreen: React.FC = (props: any) => {
     (() => {
       getSelectedItem();
     })();
-  });*/
+  });
 
   const getSelectedItem = async () => {
     try {
@@ -56,12 +56,9 @@ const EditProductScreen: React.FC = (props: any) => {
       console.log("Reading data error");
       alert("E Reading data error!" + error);
     }
-  };
-  /*
-<View>
-      <Text>{selectedProduct?.name}</Text>
-    </View>
+  }; 
 */
+
   return (
     <View style={styles.container}>
       <Text>Create New Product</Text>
@@ -88,7 +85,6 @@ const EditProductScreen: React.FC = (props: any) => {
         style={styles.productPicker}
         selectedValue={productType}
         onValueChange={(itemValue, itemIndex) => setProductType(itemValue)}
-        //onValueChange={(itemValue, itemIndex) => setProductType(itemValue)}
       >
         <Picker.Item label="Peripheral" value="Peripheral" />
         <Picker.Item label="Integrated" value="Integrated" />

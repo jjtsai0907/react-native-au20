@@ -31,12 +31,11 @@ const DetailsScreen: React.FC = (props: any) => {
       productPrice: price,
     };
     context.addProduct(newItem);
-    //props.navigation.navigate("ProductList");
-    alert("Data saved!" + newItem.productName);
+    alert("Product saved:  " + newItem.productName);
     props.navigation.navigate("Home", { id: 1 });
   };
 
-  const getOldList = async () => {
+  /*const getOldList = async () => {
     try {
       await AsyncStorage.getItem("product").then((result) => {
         if (result != null) {
@@ -76,7 +75,7 @@ const DetailsScreen: React.FC = (props: any) => {
       alert("Saving data error!");
     }
     props.navigation.navigate("Home", { id: 1 });
-  };
+  }; */
 
   return (
     <View style={styles.container}>

@@ -40,37 +40,10 @@ export const ProductContextProvider: React.FC = (props) => {
         (productToRemove) => productToRemove.productId !== item.productId
       )
     );
-
-    /*const auth = getAuth();
-		if (auth.currentUser) {
-			const db = getFirestore();
-			const reference = doc(db, "users", auth.currentUser.uid);
-			await updateDoc(reference, {
-				products: arrayRemove(item)
-			});
-		} else {
-			console.log("no user");
-		}*/
   };
 
   const addProduct = async (item: IProduct) => {
     setProducts((products) => [...products, item]);
-
-    /*const auth = getAuth();
-		if (auth.currentUser) {
-			const db = getFirestore();
-			const reference = doc(db, "users", auth.currentUser.uid);
-			await updateDoc(reference, {
-				products: arrayUnion({
-					productId: item.productId,
-					productName: item.productName,
-					productPrice: item.productPrice,
-					productType: item.productType
-				})
-			});
-		} else {
-			console.log("no user");
-		}*/
   };
 
   const editProduct = async (item: IProduct) => {

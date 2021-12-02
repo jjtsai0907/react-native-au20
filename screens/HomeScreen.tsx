@@ -16,7 +16,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import { ProductContext } from "../contexts/ProductContext";
 
 const HomeScreen: React.FC = (props: any) => {
-  const [value, setValue] = useState("");
   const [products, setProduct] = useState<Product[] | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
 
@@ -26,7 +25,7 @@ const HomeScreen: React.FC = (props: any) => {
     (() => {
       getProductValue();
     })();
-  });*/
+  });
 
   const getProductValue = async () => {
     try {
@@ -55,7 +54,7 @@ const HomeScreen: React.FC = (props: any) => {
       console.log("Saving data error");
       alert("Saving data error!");
     }
-  };
+  }; */
 
   return (
     <View style={styles.container}>
@@ -69,8 +68,6 @@ const HomeScreen: React.FC = (props: any) => {
               <Pressable
                 style={styles.listItemContainer}
                 onPress={() => {
-                  //setSelectedProduct(item);
-                  //saveSelectedItem();
                   context.setProduct(item);
                   props.navigation.navigate("EditProduct", { id: 4 });
                 }}
@@ -89,38 +86,11 @@ const HomeScreen: React.FC = (props: any) => {
           onPress={() => props.navigation.navigate("Details", { id: 3 })}
         />
       </View>
-
-      <Text>{value}</Text>
     </View>
   );
 };
 
 export default HomeScreen;
-
-function key(val: any, key: any) {
-  throw new Error("Function not implemented.");
-}
-
-function useFocuseEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}
-/*
-
-<TouchableOpacity
-        onPress={() => props.navigation.navigate("Details", { id: 3 })}
-      ></TouchableOpacity>
-
-console.log("Pressed")
-
-
-<Item
-                    id={item.id}
-                    name={item.name}
-                    price={item.price}
-                    productType={item.productType}
-                  />
-
-*/
 
 const styles = StyleSheet.create({
   container: {
