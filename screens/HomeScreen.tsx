@@ -56,7 +56,7 @@ const HomeScreen: React.FC = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Items</Text>
+      <Text style={styles.centerHeaderItem}>Items</Text>
 
       <View>
         <ScrollView>
@@ -97,26 +97,6 @@ const HomeScreen: React.FC = (props: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ebebeb",
-  },
-  text: {
-    color: "#101010",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  fab: {
-    position: "relative",
-    margin: 16,
-    right: 1,
-    bottom: 1,
-  },
-});
-
 export default HomeScreen;
 
 function key(val: any, key: any) {
@@ -133,3 +113,33 @@ function useFocuseEffect(arg0: () => void, arg1: never[]) {
       ></TouchableOpacity>
 
 console.log("Pressed")*/
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+  },
+  fab: {
+    position: "absolute",
+    backgroundColor: "green",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+  listItemContainer: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "black",
+    backgroundColor: "lightgray",
+    margin: 3,
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: "space-between",
+  },
+
+  centerHeaderItem: {
+    fontWeight: "bold",
+  },
+});
