@@ -67,9 +67,11 @@ const HomeScreen: React.FC = (props: any) => {
             data={context.products}
             renderItem={({ item }) => (
               <Pressable
+                style={styles.listItemContainer}
                 onPress={() => {
                   //setSelectedProduct(item);
                   //saveSelectedItem();
+                  context.setProduct(item);
                   props.navigation.navigate("EditProduct", { id: 4 });
                 }}
               >

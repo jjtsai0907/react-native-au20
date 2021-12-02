@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, Picker } from "react-native";
 import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Product } from "../models/ProductObject";
 import { Feather, Foundation } from "@expo/vector-icons";
+import { ProductContext } from "../contexts/ProductContext";
 
 const EditProductScreen: React.FC = (props: any) => {
+  const context = useContext(ProductContext);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [productType, setProductType] = useState("Peripheral");
+
+  const [name, setName] = useState(context.product?.productName);
+  const [price, setPrice] = useState(context.product?.productPrice ?? "");
+  const [productType, setProductType] = useState(context.product?.productType);
 
   useEffect(() => {
     (() => {
@@ -44,6 +47,7 @@ const EditProductScreen: React.FC = (props: any) => {
         style={styles.textInput}
         placeholder="Name"
         onChangeText={setName}
+        value={name}
       />
 
       <TextInput
@@ -51,6 +55,7 @@ const EditProductScreen: React.FC = (props: any) => {
         onChangeText={setPrice}
         placeholder="Price"
         keyboardType="numeric"
+        value={price}
       />
 
       <Picker
