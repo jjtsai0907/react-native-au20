@@ -13,6 +13,19 @@ const EditProductScreen: React.FC = (props: any) => {
   const [name, setName] = useState(context.product?.productName);
   const [price, setPrice] = useState(context.product?.productPrice ?? "");
   const [productType, setProductType] = useState(context.product?.productType);
+  const [isPriceValid, setIsPriceValid] = useState(true);
+
+  const inRange = () => {
+    return parseInt(price) >= 1000 && parseInt(price) <= 2600;
+  };
+
+  useEffect(() => {
+    if (productType == "Integrated") {
+      setIsPriceValid(inRange);
+    } else {
+      setIsPriceValid(true);
+    }
+  }, [price, productType]);
 
   const editProduct = () => {
     let editedItem = {
@@ -80,6 +93,14 @@ const EditProductScreen: React.FC = (props: any) => {
         keyboardType="numeric"
         value={price}
       />
+
+      {!isPriceValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The price should be between $1000 and $2600
+          </Text>
+        </View>
+      )}
 
       <Picker
         style={styles.productPicker}
