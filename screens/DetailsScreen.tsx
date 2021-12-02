@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,6 +12,7 @@ import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather, Foundation } from "@expo/vector-icons";
 import { Product } from "../models/ProductObject";
+import { ProductContext } from "../contexts/ProductContext";
 
 const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
@@ -20,7 +21,40 @@ const DetailsScreen: React.FC = (props: any) => {
   const [productList, setProductList] = useState([]);
   const [oldList, setOldList] = useState<Product[]>([]);
 
-  const getOldList = async () => {
+  const context = useContext(ProductContext);
+  const [isPriceValid, setIsPriceValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
+
+  const inRange = () => {
+    return parseInt(price) >= 1000 && parseInt(price) <= 2600;
+  };
+
+  useEffect(() => {
+    if (context.products) {
+      for (let i = 0; i < context.products?.length; i++) {
+        if (context.products[i].productName === name) {
+          setIsNameValid(false);
+          return;
+        } else {
+          setIsNameValid(true);
+        }
+      }
+    }
+  }, [name]);
+
+  const saveNewProduct = () => {
+    const newItem = {
+      productId: Math.random().toString(),
+      productName: name,
+      productType: productType,
+      productPrice: price,
+    };
+    context.addProduct(newItem);
+    alert("Product saved:  " + newItem.productName);
+    props.navigation.navigate("Home", { id: 1 });
+  };
+
+  /*const getOldList = async () => {
     try {
       await AsyncStorage.getItem("product").then((result) => {
         if (result != null) {
@@ -60,7 +94,15 @@ const DetailsScreen: React.FC = (props: any) => {
       alert("Saving data error!");
     }
     props.navigation.navigate("Home", { id: 1 });
-  };
+  }; */
+
+  useEffect(() => {
+    if (productType == "Integrated") {
+      setIsPriceValid(inRange);
+    } else {
+      setIsPriceValid(true);
+    }
+  }, [price, productType]);
 
   return (
     <View style={styles.container}>
@@ -70,6 +112,13 @@ const DetailsScreen: React.FC = (props: any) => {
         placeholder="Name"
         onChangeText={setName}
       />
+      {!isNameValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The name is not valid, please enter a new one
+          </Text>
+        </View>
+      )}
 
       <TextInput
         style={styles.textInput}
@@ -77,6 +126,14 @@ const DetailsScreen: React.FC = (props: any) => {
         placeholder="Price"
         keyboardType="numeric"
       />
+
+      {!isPriceValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The price should be between $1000 and $2600
+          </Text>
+        </View>
+      )}
 
       <Picker
         style={styles.productPicker}
@@ -91,9 +148,14 @@ const DetailsScreen: React.FC = (props: any) => {
           icon={<Feather name="download" size={24} color="black" />}
           title="SAVE"
           disabled={
-            name != "" && price != "" && productType != "" ? false : true
+            name != "" &&
+            price != "" &&
+            productType != "" &&
+            isPriceValid == true
+              ? false
+              : true
           }
-          onPress={() => saveProductValue()}
+          onPress={() => saveNewProduct()}
         />
 
         <Button

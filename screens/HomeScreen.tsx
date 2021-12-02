@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -13,13 +13,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Product, Products } from "../models/ProductObject";
 import Item from "../models/Item";
 import { useFocusEffect } from "@react-navigation/native";
+import { ProductContext } from "../contexts/ProductContext";
 
 const HomeScreen: React.FC = (props: any) => {
-  const [value, setValue] = useState("");
   const [products, setProduct] = useState<Product[] | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
 
-  useFocusEffect(() => {
+  const context = useContext(ProductContext);
+
+  /*useFocusEffect(() => {
     (() => {
       getProductValue();
     })();
@@ -52,7 +54,7 @@ const HomeScreen: React.FC = (props: any) => {
       console.log("Saving data error");
       alert("Saving data error!");
     }
-  };
+  }; */
 
   return (
     <View style={styles.container}>
@@ -61,27 +63,20 @@ const HomeScreen: React.FC = (props: any) => {
       <View>
         <ScrollView>
           <FlatList
-            data={products}
-            renderItem={({ item }) =>
-              products == null ? (
-                <Text>NO ITEMS</Text>
-              ) : (
-                <Pressable
-                  onPress={() => {
-                    setSelectedProduct(item);
-                    saveSelectedItem();
-                    props.navigation.navigate("EditProduct", { id: 4 });
-                  }}
-                >
-                  <Item
-                    id={item.id}
-                    name={item.name}
-                    price={item.price}
-                    productType={item.productType}
-                  />
-                </Pressable>
-              )
-            }
+            data={context.products}
+            renderItem={({ item }) => (
+              <Pressable
+                style={styles.listItemContainer}
+                onPress={() => {
+                  context.setProduct(item);
+                  props.navigation.navigate("EditProduct", { id: 4 });
+                }}
+              >
+                <Text style={styles.leftItem}>{item.productName}</Text>
+                <Text style={styles.centerItem}>{item.productType}</Text>
+                <Text style={styles.rightItem}>$ {item.productPrice}</Text>
+              </Pressable>
+            )}
           />
         </ScrollView>
         <FAB
@@ -91,28 +86,11 @@ const HomeScreen: React.FC = (props: any) => {
           onPress={() => props.navigation.navigate("Details", { id: 3 })}
         />
       </View>
-
-      <Text>{value}</Text>
     </View>
   );
 };
 
 export default HomeScreen;
-
-function key(val: any, key: any) {
-  throw new Error("Function not implemented.");
-}
-
-function useFocuseEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}
-/*
-
-<TouchableOpacity
-        onPress={() => props.navigation.navigate("Details", { id: 3 })}
-      ></TouchableOpacity>
-
-console.log("Pressed")*/
 
 const styles = StyleSheet.create({
   container: {
@@ -138,7 +116,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: "space-between",
   },
-
+  leftItem: {
+    textAlign: "left",
+    padding: 10,
+  },
+  centerItem: {
+    textAlign: "center",
+    padding: 10,
+  },
+  rightItem: {
+    textAlign: "right",
+    padding: 10,
+  },
   centerHeaderItem: {
     fontWeight: "bold",
   },

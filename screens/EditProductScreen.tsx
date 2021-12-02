@@ -1,17 +1,73 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, Picker } from "react-native";
 import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Product } from "../models/ProductObject";
 import { Feather, Foundation } from "@expo/vector-icons";
+import { ProductContext } from "../contexts/ProductContext";
 
 const EditProductScreen: React.FC = (props: any) => {
+  const context = useContext(ProductContext);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [productType, setProductType] = useState("Peripheral");
+
+  const [name, setName] = useState(context.product?.productName);
+  const [price, setPrice] = useState(context.product?.productPrice ?? "");
+  const [productType, setProductType] = useState(context.product?.productType);
+  const [isPriceValid, setIsPriceValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
 
   useEffect(() => {
+    if (context.products) {
+      for (let i = 0; i < context.products?.length; i++) {
+        if (context.products[i].productName === name) {
+          if (name === context.product?.productName) {
+            setIsNameValid(true);
+          } else {
+            setIsNameValid(false);
+            return;
+          }
+        } else {
+          setIsNameValid(true);
+        }
+      }
+    }
+  }, [name]);
+
+  const inRange = () => {
+    return parseInt(price) >= 1000 && parseInt(price) <= 2600;
+  };
+
+  useEffect(() => {
+    if (productType == "Integrated") {
+      setIsPriceValid(inRange);
+    } else {
+      setIsPriceValid(true);
+    }
+  }, [price, productType]);
+
+  const editProduct = () => {
+    let editedItem = {
+      productId: context.product?.productId ?? "",
+      productName: name ?? "",
+      productType: productType ?? "",
+      productPrice: price ?? "",
+    };
+
+    context.editProduct(editedItem);
+    props.navigation.navigate("Home", { id: 1 });
+  };
+
+  const removeProduct = () => {
+    if (context.product) {
+      context.removeProduct(context.product);
+      alert("Deleted");
+      props.navigation.navigate("Home", { id: 1 });
+    } else {
+      console.log("Something went wrong");
+    }
+  };
+
+  /*useEffect(() => {
     (() => {
       getSelectedItem();
     })();
@@ -31,27 +87,46 @@ const EditProductScreen: React.FC = (props: any) => {
       console.log("Reading data error");
       alert("E Reading data error!" + error);
     }
-  };
-  /*
-<View>
-      <Text>{selectedProduct?.name}</Text>
-    </View>
+  }; 
 */
+
   return (
     <View style={styles.container}>
       <Text>Create New Product</Text>
       <TextInput
         style={styles.textInput}
         placeholder="Name"
-        onChangeText={setName}
+        onChangeText={(text) => {
+          setName(text);
+        }}
+        value={name}
       />
+
+      {!isNameValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The name is not valid, please enter a new one
+          </Text>
+        </View>
+      )}
 
       <TextInput
         style={styles.textInput}
-        onChangeText={setPrice}
+        onChangeText={(text) => {
+          setPrice(text);
+        }}
         placeholder="Price"
         keyboardType="numeric"
+        value={price}
       />
+
+      {!isPriceValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The price should be between $1000 and $2600
+          </Text>
+        </View>
+      )}
 
       <Picker
         style={styles.productPicker}
@@ -68,12 +143,23 @@ const EditProductScreen: React.FC = (props: any) => {
           disabled={
             name != "" && price != "" && productType != "" ? false : true
           }
+          onPress={() => {
+            editProduct();
+          }}
         />
 
         <Button
           icon={<Foundation name="prohibited" size={24} color="black" />}
           title="CANCEL"
           onPress={() => props.navigation.navigate("Home", { id: 1 })}
+        />
+
+        <Button
+          icon={<Foundation name="page-remove" size={24} color="red" />}
+          title="DELETE"
+          onPress={() => {
+            removeProduct();
+          }}
         />
       </View>
     </View>

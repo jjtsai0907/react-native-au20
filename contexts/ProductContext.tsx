@@ -1,0 +1,76 @@
+import * as React from "react";
+import { useState } from "react";
+
+interface IProductContext {
+  product?: IProduct;
+  setProduct: (product: IProduct) => void;
+  products?: IProduct[];
+  setProducts: (products: IProduct[]) => void;
+  removeProduct: (item: IProduct) => void;
+  addProduct: (item: IProduct) => void;
+  editProduct: (item: IProduct) => void;
+}
+
+interface IProduct {
+  productId: string;
+  productName: string;
+  productType: string;
+  productPrice: string;
+}
+
+export const ProductContext = React.createContext<IProductContext>({
+  product: undefined,
+  setProduct: () => {},
+  products: [],
+  setProducts: () => {},
+  removeProduct: () => {},
+  addProduct: () => {},
+  editProduct: () => {},
+});
+
+const initialState: IProduct[] = [];
+
+export const ProductContextProvider: React.FC = (props) => {
+  const [products, setProducts] = useState<IProduct[]>(initialState);
+  const [product, setProduct] = useState<IProduct>();
+
+  const removeProduct = async (item: IProduct) => {
+    setProducts((products) =>
+      products.filter(
+        (productToRemove) => productToRemove.productId !== item.productId
+      )
+    );
+  };
+
+  const addProduct = async (item: IProduct) => {
+    setProducts((products) => [...products, item]);
+  };
+
+  const editProduct = async (item: IProduct) => {
+    const newArray = [...products];
+    for (let i = 0; i < newArray.length; i++) {
+      if (newArray[i].productId === item.productId) {
+        newArray[i].productName = item.productName;
+        newArray[i].productPrice = item.productPrice;
+        newArray[i].productType = item.productType;
+      }
+    }
+    //setProducts(newArray);
+  };
+
+  return (
+    <ProductContext.Provider
+      value={{
+        product,
+        setProduct,
+        products,
+        setProducts,
+        removeProduct,
+        addProduct,
+        editProduct,
+      }}
+    >
+      {props.children}
+    </ProductContext.Provider>
+  );
+};
