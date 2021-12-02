@@ -13,6 +13,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather, Foundation } from "@expo/vector-icons";
 import { Product } from "../models/ProductObject";
 import { ProductContext } from "../contexts/ProductContext";
+import { Translate } from "../translations/Translation";
+import { tokens } from "../translations/appStructure";
 
 const DetailsScreen: React.FC = (props: any) => {
   const [name, setName] = useState("");
@@ -51,7 +53,10 @@ const DetailsScreen: React.FC = (props: any) => {
     };
     context.addProduct(newItem);
     alert("Product saved:  " + newItem.productName);
-    props.navigation.navigate("Home", { id: 1 });
+    props.navigation.navigate(
+      Translate(tokens.screens.mainNavigator.TitleProductList),
+      { id: 1 }
+    );
   };
 
   /*const getOldList = async () => {
@@ -106,16 +111,15 @@ const DetailsScreen: React.FC = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Text>Create New Product</Text>
       <TextInput
         style={styles.textInput}
-        placeholder="Name"
+        placeholder={Translate(tokens.screens.newProduct.NameInputPlaceholder)}
         onChangeText={setName}
       />
       {!isNameValid && (
         <View style={styles.errorMessage}>
           <Text style={styles.errorMessageLabel}>
-            The name is not valid, please enter a new one
+            {Translate(tokens.screens.newProduct.NameErrorText)}
           </Text>
         </View>
       )}
@@ -123,14 +127,14 @@ const DetailsScreen: React.FC = (props: any) => {
       <TextInput
         style={styles.textInput}
         onChangeText={setPrice}
-        placeholder="Price"
+        placeholder={Translate(tokens.screens.newProduct.PriceInputPlaceholder)}
         keyboardType="numeric"
       />
 
       {!isPriceValid && (
         <View style={styles.errorMessage}>
           <Text style={styles.errorMessageLabel}>
-            The price should be between $1000 and $2600
+            {Translate(tokens.screens.newProduct.PriceErrorText)}
           </Text>
         </View>
       )}
@@ -146,7 +150,7 @@ const DetailsScreen: React.FC = (props: any) => {
       <View style={styles.buttonContainer}>
         <Button
           icon={<Feather name="download" size={24} color="black" />}
-          title="SAVE"
+          title={Translate(tokens.screens.newProduct.SaveButtonText)}
           disabled={
             name != "" &&
             price != "" &&
@@ -160,8 +164,13 @@ const DetailsScreen: React.FC = (props: any) => {
 
         <Button
           icon={<Foundation name="prohibited" size={24} color="black" />}
-          title="CANCEL"
-          onPress={() => props.navigation.navigate("Home", { id: 1 })}
+          title={Translate(tokens.screens.newProduct.CancelButtontext)}
+          onPress={() =>
+            props.navigation.navigate(
+              Translate(tokens.screens.mainNavigator.TitleProductList),
+              { id: 1 }
+            )
+          }
         />
       </View>
     </View>

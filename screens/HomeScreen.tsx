@@ -14,6 +14,8 @@ import { Product, Products } from "../models/ProductObject";
 import Item from "../models/Item";
 import { useFocusEffect } from "@react-navigation/native";
 import { ProductContext } from "../contexts/ProductContext";
+import { tokens } from "../translations/appStructure";
+import { Translate } from "../translations/Translation";
 
 const HomeScreen: React.FC = (props: any) => {
   const [products, setProduct] = useState<Product[] | null>(null);
@@ -58,7 +60,9 @@ const HomeScreen: React.FC = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.centerHeaderItem}>Items</Text>
+      <Text style={styles.centerHeaderItem}>
+        {Translate(tokens.screens.productList.HeaderType)}
+      </Text>
 
       <View>
         <ScrollView>
@@ -69,7 +73,10 @@ const HomeScreen: React.FC = (props: any) => {
                 style={styles.listItemContainer}
                 onPress={() => {
                   context.setProduct(item);
-                  props.navigation.navigate("EditProduct", { id: 4 });
+                  props.navigation.navigate(
+                    Translate(tokens.screens.mainNavigator.TitleEditProduct),
+                    { id: 4 }
+                  );
                 }}
               >
                 <Text style={styles.leftItem}>{item.productName}</Text>
@@ -83,7 +90,12 @@ const HomeScreen: React.FC = (props: any) => {
           style={styles.fab}
           small
           icon="plus"
-          onPress={() => props.navigation.navigate("Details", { id: 3 })}
+          onPress={() =>
+            props.navigation.navigate(
+              Translate(tokens.screens.mainNavigator.TitleNewProduct),
+              { id: 3 }
+            )
+          }
         />
       </View>
     </View>

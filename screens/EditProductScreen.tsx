@@ -5,6 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Product } from "../models/ProductObject";
 import { Feather, Foundation } from "@expo/vector-icons";
 import { ProductContext } from "../contexts/ProductContext";
+import { tokens } from "../translations/appStructure";
+import { Translate } from "../translations/Translation";
 
 const EditProductScreen: React.FC = (props: any) => {
   const context = useContext(ProductContext);
@@ -54,14 +56,20 @@ const EditProductScreen: React.FC = (props: any) => {
     };
 
     context.editProduct(editedItem);
-    props.navigation.navigate("Home", { id: 1 });
+    props.navigation.navigate(
+      Translate(tokens.screens.mainNavigator.TitleProductList),
+      { id: 1 }
+    );
   };
 
   const removeProduct = () => {
     if (context.product) {
       context.removeProduct(context.product);
       alert("Deleted");
-      props.navigation.navigate("Home", { id: 1 });
+      props.navigation.navigate(
+        Translate(tokens.screens.mainNavigator.TitleProductList),
+        { id: 1 }
+      );
     } else {
       console.log("Something went wrong");
     }
@@ -92,10 +100,10 @@ const EditProductScreen: React.FC = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Text>Create New Product</Text>
+      <Text>{Translate(tokens.screens.productList.HeaderName)}</Text>
       <TextInput
         style={styles.textInput}
-        placeholder="Name"
+        placeholder={Translate(tokens.screens.editProduct.NameInputPlaceholder)}
         onChangeText={(text) => {
           setName(text);
         }}
@@ -105,7 +113,7 @@ const EditProductScreen: React.FC = (props: any) => {
       {!isNameValid && (
         <View style={styles.errorMessage}>
           <Text style={styles.errorMessageLabel}>
-            The name is not valid, please enter a new one
+            {Translate(tokens.screens.editProduct.NameErrorText)}
           </Text>
         </View>
       )}
@@ -115,7 +123,9 @@ const EditProductScreen: React.FC = (props: any) => {
         onChangeText={(text) => {
           setPrice(text);
         }}
-        placeholder="Price"
+        placeholder={Translate(
+          tokens.screens.editProduct.PriceInputPlaceholder
+        )}
         keyboardType="numeric"
         value={price}
       />
@@ -123,7 +133,7 @@ const EditProductScreen: React.FC = (props: any) => {
       {!isPriceValid && (
         <View style={styles.errorMessage}>
           <Text style={styles.errorMessageLabel}>
-            The price should be between $1000 and $2600
+            {Translate(tokens.screens.editProduct.PriceErrorText)}
           </Text>
         </View>
       )}
@@ -139,7 +149,7 @@ const EditProductScreen: React.FC = (props: any) => {
       <View style={styles.buttonContainer}>
         <Button
           icon={<Feather name="download" size={24} color="black" />}
-          title="SAVE"
+          title={Translate(tokens.screens.editProduct.SaveButtonText)}
           disabled={
             name != "" && price != "" && productType != "" ? false : true
           }
@@ -150,13 +160,18 @@ const EditProductScreen: React.FC = (props: any) => {
 
         <Button
           icon={<Foundation name="prohibited" size={24} color="black" />}
-          title="CANCEL"
-          onPress={() => props.navigation.navigate("Home", { id: 1 })}
+          title={Translate(tokens.screens.editProduct.CancelButtontext)}
+          onPress={() =>
+            props.navigation.navigate(
+              Translate(tokens.screens.mainNavigator.TitleProductList),
+              { id: 1 }
+            )
+          }
         />
 
         <Button
           icon={<Foundation name="page-remove" size={24} color="red" />}
-          title="DELETE"
+          title={Translate(tokens.screens.editProduct.RemoveProductText)}
           onPress={() => {
             removeProduct();
           }}
