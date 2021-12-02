@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -22,6 +22,11 @@ const DetailsScreen: React.FC = (props: any) => {
   const [oldList, setOldList] = useState<Product[]>([]);
 
   const context = useContext(ProductContext);
+  const [isPriceValid, setIsPriceValid] = useState(true);
+
+  const inRange = () => {
+    return parseInt(price) >= 1000 && parseInt(price) <= 2600;
+  };
 
   const saveNewProduct = () => {
     const newItem = {
@@ -77,6 +82,14 @@ const DetailsScreen: React.FC = (props: any) => {
     props.navigation.navigate("Home", { id: 1 });
   }; */
 
+  useEffect(() => {
+    if (productType == "Integrated") {
+      setIsPriceValid(inRange);
+    } else {
+      setIsPriceValid(true);
+    }
+  }, [price, productType]);
+
   return (
     <View style={styles.container}>
       <Text>Create New Product</Text>
@@ -93,6 +106,14 @@ const DetailsScreen: React.FC = (props: any) => {
         keyboardType="numeric"
       />
 
+      {!isPriceValid && (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorMessageLabel}>
+            The price should be between $1000 and $2600
+          </Text>
+        </View>
+      )}
+
       <Picker
         style={styles.productPicker}
         selectedValue={productType}
@@ -106,7 +127,12 @@ const DetailsScreen: React.FC = (props: any) => {
           icon={<Feather name="download" size={24} color="black" />}
           title="SAVE"
           disabled={
-            name != "" && price != "" && productType != "" ? false : true
+            name != "" &&
+            price != "" &&
+            productType != "" &&
+            isPriceValid == true
+              ? false
+              : true
           }
           onPress={() => saveNewProduct()}
         />

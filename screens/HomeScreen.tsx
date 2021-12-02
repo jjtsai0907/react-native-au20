@@ -74,7 +74,7 @@ const HomeScreen: React.FC = (props: any) => {
               >
                 <Text style={styles.leftItem}>{item.productName}</Text>
                 <Text style={styles.centerItem}>{item.productType}</Text>
-                <Text style={styles.rightItem}>{item.productPrice}</Text>
+                <Text style={styles.rightItem}>$ {item.productPrice}</Text>
               </Pressable>
             )}
           />
